@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>Employee Form</h2>
+
+  <form method="post" id="employeeForm" data-unitnames-url="{% url 'ajax_load_unitnames' %}" novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <button type="submit">Save</button>
+    <a href="{% url 'employee_changelist' %}">Nevermind</a>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+    $("#id_office").change(function () {
+      var url = $("#employeeForm").attr("data-unitnames-url");
+      var officeId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'office': officeId
+        },
+        success: function (data) {
+          $("#id_unitname").html(data);
+        }
+      });
+
+    });
+  </script>
+  <script>
+    $("#id_department").change(function () {
+      var url = $("#employeeForm").attr("data-designations-url");
+      var officeId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'department': departmentId
+        },
+        success: function (data) {
+          $("#id_designation").html(data);
+        }
+      });
+
+    });
+  </script>
+
+{% endblock %}
